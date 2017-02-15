@@ -271,7 +271,10 @@ class Item {
 	 */
 	public function checkActivationStatus()
     {
-		if ( $this->builder->options('restful') == true ) {
+        $activateItems = $this->builder->options('activate_items');
+        if (is_array($activateItems) && in_array($this->id, $activateItems)) {
+            $this->activate();
+        } else if ( $this->builder->options('restful') == true ) {
 			$path  = ltrim(parse_url($this->url(), PHP_URL_PATH), '/');
 			$rpath = \Request::path();
 
@@ -328,12 +331,12 @@ class Item {
 	 *
 	 * @param \Opbol\Menu\Item $item
 	 */
-	public function activate( \Opbol\Menu\Item $item = null )
+	public function activate(\Opbol\Menu\Item $item = null)
     {
 		$item = is_null($item) ? $this : $item;
 		
 		// Check to see which element should have class 'active' set.
-		if( $this->builder->options('active_element') == 'item' ) {
+		if($this->builder->options('active_element') == 'item') {
 			$item->active();
 		} else {
 			$item->link->active();
@@ -342,8 +345,13 @@ class Item {
 		// If parent activation is enabled:
 		if( true === $this->builder->options('activate_parents') ){
 			// Moving up through the parent nodes, activating them as well.
-			if( $item->parent ) {
-				$this->activate( $this->builder->whereId( $item->parent )->first() );
+			if($item->parent) {
+			    if ($parent = $this->builder->whereId( $item->parent )->first()) {
+                    $this->activate($parent);
+                } else {
+                    $this->builder->options('activate_items',
+                                            array_merge($this->builder->options('activate_items') ?: [], [$item->parent]));
+                }
 			}
 		}
 	}
@@ -351,7 +359,7 @@ class Item {
 	/**
 	 * Make the item active
 	 *
-	 * @return Opbol\Menu\Item
+	 * @return \Opbol\Menu\Item
 	 */
 	public function active($pattern = null)
     {
@@ -374,7 +382,7 @@ class Item {
 	 * Set or get items's meta data
 	 *
 	 * @param  mixed
-	 * @return string|Opbol\Menu\Item
+	 * @return string|\Opbol\Menu\Item
 	 */
 	public function data()
 	{

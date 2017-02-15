@@ -599,7 +599,6 @@ class Builder {
 	 */
 	public function filterRecursive($attribute, $value)
     {
-
 		$collection = new Collection;
 		// Iterate over all the items in the main collection
 		$this->items->each( function ($item) use ($attribute, $value, &$collection) {
