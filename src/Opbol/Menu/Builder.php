@@ -29,7 +29,7 @@ class Builder {
         'activate_parents' => true,
         'active_class'     => 'active',
         'restful'          => false,
-        'cascade_data'     => true,
+        'cascade_data'     => false,
         'rest_base'        => '',      // string|array
         'active_element'   => 'item',  // item|link
     ];
@@ -334,14 +334,20 @@ class Builder {
         $prefix = isset($options['prefix']) ? $options['prefix'] : '';
 		$secure = (isset($options['secure']) && $options['secure'] === true) ? true : false;
 
+        $extra = [];
+
 		if (is_array($url)) {
-			if (self::isAbs($url[0])){
-				return $url[0];
-			}
-			return \URL::to($prefix . '/' . $url[0], array_slice($url, 1), $secure);
+            $extra = array_slice($url, 1);
+            $url = $url[0];
 		}
 
-		return self::isAbs($url) ? $url : \URL::to($prefix . '/' . $url, array(), $secure);
+		if (self::isAbs($url)) {
+		    return $url;
+        }
+
+		$prefix = $url && $url[0] == '/' ? '' : $prefix . '/';
+
+		return \URL::to($prefix . $url, $extra, $secure);
 	}
 
 	/**

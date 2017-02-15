@@ -46,7 +46,7 @@ class Link {
 	/**
 	 * Make the anchor active
 	 *
-	 * @return Opbol\Menu\Link
+	 * @return $this
 	 */
 	public function active()
     {
@@ -60,7 +60,7 @@ class Link {
 	 * Set Anchor's href property
 	 *
      * @param string $href
-	 * @return Opbol\Menu\Link
+	 * @return $this
 	 */
 	public function href($href)
     {
@@ -72,7 +72,7 @@ class Link {
 	/**
 	 * Make the url secure
 	 *
-	 * @return Opbol\Menu\Item
+	 * @return $this
 	 */
 	public function secure()
     {
@@ -84,7 +84,7 @@ class Link {
 	 * Add attributes to the link
 	 *
 	 * @param  mixed
-	 * @return string|Opbol\Menu\Link
+	 * @return mixed
 	 */
 	public function attr()
 	{
@@ -107,7 +107,7 @@ class Link {
 	 * Check for a method of the same name if the attribute doesn't exist.
 	 *
 	 * @param  string
-	 * @return void
+	 * @return mixed
 	 */
 	public function __get($prop)
     {

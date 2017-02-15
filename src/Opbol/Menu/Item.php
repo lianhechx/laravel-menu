@@ -170,7 +170,7 @@ class Item {
 	 * Add attributes to the item
 	 *
 	 * @param  mixed
-	 * @return string|Opbol\Menu\Item
+	 * @return mixed
 	 */
 	public function attr()
 	{
@@ -197,15 +197,12 @@ class Item {
 	public function url()
     {
         // If the item has a link proceed:
-        if( !is_null( $this->link ) ) {
-
+        if(!is_null($this->link)) {
             // If item's link has `href` property explcitly defined
             // return it
-            if( $this->link->href ) {
-
+            if($this->link->href) {
                 return $this->link->href;
             }
-
             // Otherwise dispatch to the proper address
             return $this->builder->dispatch($this->link->path);
         }
@@ -215,7 +212,7 @@ class Item {
 	/**
 	 * Prepends text or html to the item
 	 *
-	 * @return Opbol\Menu\Item
+	 * @return $this
 	 */
 	public function prepend($html)
 	{
@@ -227,7 +224,7 @@ class Item {
 	/**
 	 * Appends text or html to the item
 	 *
-	 * @return Opbol\Menu\Item
+	 * @return $this
 	 */
 	public function append($html)
 	{
@@ -359,7 +356,7 @@ class Item {
 	/**
 	 * Make the item active
 	 *
-	 * @return \Opbol\Menu\Item
+	 * @return $this
 	 */
 	public function active($pattern = null)
     {
@@ -382,7 +379,7 @@ class Item {
 	 * Set or get items's meta data
 	 *
 	 * @param  mixed
-	 * @return string|\Opbol\Menu\Item
+	 * @return mixed
 	 */
 	public function data()
 	{
